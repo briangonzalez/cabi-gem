@@ -42,10 +42,6 @@ You could then query your data like so:
 # Simple selection
 Cabi.read('pages:about:body')                 # contents of page/about/body.html
 
-# Selection within YAML files
-Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
-Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
-
 # Selection with/without explicit file extension
 Cabi.read('posts:some-article:index')         # contents of posts/some-article/index.html
 Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/index.html
@@ -56,6 +52,10 @@ Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/i
 Cabi.read('pages:about:*')                    # an array of body.html and meta.yml contents
 Cabi.read('pages/index.*')                    # an array of all files that start with "index"
 Cabi.read('**/**')                            # an array of all files in cache
+
+# Selection within YAML files
+Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
+Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
 ```
 
 ### Custom Cache Directory
@@ -64,13 +64,12 @@ Cabi assumes that your cache directory is either a folder at the top level of yo
 
 For instance, if you had a folder called `super-cache` located inside of your project's root that had a file called `.cabi-cache` inside of it, this folder would be treated as your cache directory.
 
-### Questions?
-
-Find me online [@brianmgonzalez](http://twitter.com/brianmgonzalez)
-
 ### Icon <img src="https://rawgithub.com/briangonzalez/cabi-gem/master/data/cabi.svg" width=20 style="margin-right: 10px">
 
 [Cabi Icon](http://thenounproject.com/noun/file-cabinet/#icon-No22117) designed by Michela Tannoia, from The Noun Project.
 
 ### Tests
 Run the test suite by running `rake test` in the parent directory.
+
+### Questions?
+Find me online [@brianmgonzalez](http://twitter.com/brianmgonzalez)
