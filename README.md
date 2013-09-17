@@ -4,6 +4,8 @@ A simple, flat-file datastore for Ruby.
 
 ### Getting Started
 
+Cabi is a flat-file datastore where data is stored by directory stucture and accessed by colon-delimited strings. Here's how to get started:
+
 ``` bash
 $ gem install cabi
 $ cabi init --mock
