@@ -8,6 +8,7 @@ end
 module Cabi
 
   DELIMITER       = ':'
+  BULK_SELECTOR   = '*'
   YAML_EXT        = '.yml'
   CABI_CACHE_ID   = '.cabi-cache'
   CABI_CACHE_DIR  = './cabi-cache'

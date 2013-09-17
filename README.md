@@ -16,7 +16,7 @@ Then access your data like so:
 ```bash
 $ irb
   > require 'cabi'
-  > Cabi::Cache.read('pages:about:body')
+  > Cabi.read('pages:about:body')
     => "<h1>Hello, Cabi!</h1>"
 ```
 
@@ -39,11 +39,23 @@ Assuming your `cabi-cache` folder has the following structure:
 You could then query your data like so:
 
 ```ruby
-Cabi.read('pages:about:body')                # returns contents of page/about/body.html
-Cabi.read('pages:about:meta:foo:bar')        # returns contents of ['foo']['bar'] in page/about/meta.yml hash
-Cabi.read('info:foo:bar:baz')                # returns contents of ['foo']['bar']['baz'] in info.yml hash
-Cabi.read('posts:some-article:index')        # returns contents of posts/some-article/index.html
-Cabi.read('posts:some-article:index.html')   # returns contents of posts/some-article/index.html
+# Simple selection
+Cabi.read('pages:about:body')                 # contents of page/about/body.html
+
+# Selection within YAML files
+Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
+Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
+
+# Selection with/without explicit file extension
+Cabi.read('posts:some-article:index')         # contents of posts/some-article/index.html
+Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/index.html
+
+# Bulk selection - since Cabi uses dir globbing 
+# under the hood, any valid dir glob in your 
+# selection will work.
+Cabi.read('pages:about:*')                    # an array of body.html and meta.yml contents
+Cabi.read('pages/index.*')                    # an array of all files that start with "index"
+Cabi.read('**/**')                            # an array of all files in cache
 ```
 
 ### Custom Cache Directory

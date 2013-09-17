@@ -3,6 +3,7 @@ module Cabi
   class DataFile
 
     def self.contents(id)
+      return self.bulk_selection(id)                    if self.bulk_selection?(id)
       return File.read( self.file(id) )                 if self.file_exists?(id)
       return File.read( self.yaml_file(id) )            if self.yaml_exists?(id)
       return File.read( self.non_extension_file(id) )   if self.non_extension_file(id)
@@ -23,18 +24,6 @@ module Cabi
       File.open( file, 'w') {|f| f.write(content) } 
     end
 
-    def self.exists?(id)
-      self.file_exists?(id) or self.yaml_exists?(id)
-    end
-
-    def self.file_exists?(id)
-      File.exists?( self.file(id) )
-    end
-
-    def self.yaml_exists?(id)
-      File.exists?( self.yaml_file(id) )
-    end
-
     def self.file_yaml_or_non_extension_file(id)
       return self.file(id)                if self.file_exists?(id)
       return self.yaml_file(id)           if self.yaml_exists?(id)
@@ -43,17 +32,11 @@ module Cabi
     end
 
     def self.file(id)
-      id = id.split( DELIMITER )
-      id = [Cabi.cache_dir] + id
-      File.join( *id )
+      File.join( *self.id_array(id) )
     end
 
     def self.yaml_file(id)
       File.join( self.file(id) + YAML_EXT )
-    end
-
-    def self.file_parent(id)
-      File.dirname( self.file(id) ) 
     end
 
     def self.non_extension_file(id)
@@ -68,9 +51,46 @@ module Cabi
       file
     end
 
+    def self.bulk_selection(id)
+      contents  = []
+
+      Dir.glob( File.join( *self.id_array(id) ) ).each do |f|
+        next if f == '.' or f == '..' or File.directory?(f)
+        contents << File.read(f) if File.exists?(f)
+      end
+
+      contents
+    end
+
+    def self.id_array(id)
+      id = id.split( DELIMITER )
+      [Cabi.cache_dir] + id
+    end
+
+    def self.exists?(id)
+      self.file_exists?(id) or self.yaml_exists?(id)
+    end
+
+    def self.file_exists?(id)
+      File.exists?( self.file(id) )
+    end
+
+    def self.yaml_exists?(id)
+      File.exists?( self.yaml_file(id) )
+    end
+
+    def self.file_parent(id)
+      File.dirname( self.file(id) ) 
+    end
+
+    def self.bulk_selection?(id)
+      self.id_array(id).join('').index /\*/
+    end
+
     def self.sub_yaml(id)
       id = id.split( DELIMITER )
       val = false
+
       id.each_with_index do |key, index|
         break if val
 

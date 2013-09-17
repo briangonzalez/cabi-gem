@@ -27,6 +27,22 @@ class CabiTest < Test::Unit::TestCase
                   Cabi.read('pages:about:body.html')
   end
 
+  def test_bulk_selection
+    string = "Hello, Cabi!"
+    Cabi.write('pages:about:body', string)
+
+    selection = Cabi.read('pages:about:*')
+
+    assert_equal  2, selection.length  
+    assert_equal  string, selection[0]  
+
+    assert_equal  1, Cabi.read('pages:about:*.yml').length
+    assert_equal  1, Cabi.read('pages:about:*.html').length
+    assert_equal  5, Cabi.read('**/**').length
+    assert_equal  3, Cabi.read('**/**.html').length
+    assert_equal  1, Cabi.read('**/body.*').length
+  end
+
   def test_write
     old = Cabi.read('pages:about:body')
     Cabi.write('pages:about:body', "test")
