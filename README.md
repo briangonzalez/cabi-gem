@@ -8,7 +8,7 @@ Cabi is a flat-file datastore where data is stored by directory stucture and acc
 
 ``` bash
 $ gem install cabi
-$ cabi init --mock
+$ cabi init --mock    # use --mock to init cabi cache with some fake data
 ```
 
 Then access your data like so:
@@ -24,16 +24,20 @@ $ irb
 
 Assuming your `cabi-cache` folder has the following structure:
 
-    |-- info.yml
-    |-- pages
-    |    |-- about 
-    |         |-- body.html
-    |         |-- meta.yml
-    |         
-    |-- posts
-      |-- some-article
-            |-- index.html
-            |-- nav.html
+    .
+    ├── info.yml
+    ├── nav.yml
+    ├── pages
+    │   └── about
+    │       ├── body.html
+    │       ├── meta.yml
+    │       ├── person-1.html
+    │       ├── person-2.html
+    │       └── person-3.html
+    └── posts
+        └── random-article
+            ├── index.html
+            └── nav.html
             
 
 You could then query your data like so:
@@ -50,8 +54,8 @@ Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/i
 # under the hood, any valid dir glob in your 
 # selection will work.
 Cabi.read('pages:about:*')                    # an array of body.html and meta.yml contents
-Cabi.read('pages/index.*')                    # an array of all files that start with "index"
-Cabi.read('**/**')                            # an array of all files in cache
+Cabi.read('pages:about:person-*')             # an array of all person-* html files
+Cabi.read('**/*')                             # an array of all files in cache
 
 # Selection within YAML files
 Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
@@ -70,6 +74,12 @@ For instance, if you had a folder called `super-cache` located inside of your pr
 
 ### Tests
 Run the test suite by running `rake test` in the parent directory.
+
+### Building Gem Manually
+```bash
+$ gem build cabi.gemspec
+$ gem install ./cabi-<VERSION>.gem
+```
 
 ### Questions?
 Find me online [@brianmgonzalez](http://twitter.com/brianmgonzalez)
