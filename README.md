@@ -8,7 +8,7 @@ Cabi is a flat-file datastore where data is stored by directory stucture and acc
 
 ``` bash
 $ gem install cabi
-$ cabi init --mock    # use --mock to init cabi cache with some fake data
+$ cabi init --mock    # use --mock to init cabi data with some fake data
 ```
 
 Then access your data like so:
@@ -22,7 +22,7 @@ $ irb
 
 ### Usage
 
-Assuming your `cabi-cache` folder has the following structure:
+Assuming your `cabi-data` folder has the following structure:
 
     .
     ├── info.yml
@@ -55,18 +55,18 @@ Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/i
 # selection will work.
 Cabi.read('pages:about:*')                    # an array of body.html and meta.yml contents
 Cabi.read('pages:about:person-*')             # an array of all person-* html files
-Cabi.read('**/*')                             # an array of all files in cache
+Cabi.read('**/*')                             # an array of all files in data
 
 # Selection within YAML files
 Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
 Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
 ```
 
-### Custom Cache Directory
+### Custom Data Directory
 
-Cabi assumes that your cache directory is either a folder at the top level of your project with a `.cabi-cache` file in it (to indicate that it's the cache directory). If one is not found, the cache directory defaults to `./cabi-cache`.
+Cabi assumes that your data directory is either a folder at the top level of your project with a `.cabi-data` file in it (to indicate that it's the data directory). If one is not found, the data directory defaults to `./cabi-data`.
 
-For instance, if you had a folder called `super-cache` located inside of your project's root that had a file called `.cabi-cache` inside of it, this folder would be treated as your cache directory.
+For instance, if you had a folder called `super-data` located inside of your project's root that had a file called `.cabi-data` inside of it, this folder would be treated as your data directory.
 
 ### Icon <img src="https://rawgithub.com/briangonzalez/cabi-gem/master/data/cabi.svg" width=20 style="margin-right: 10px">
 

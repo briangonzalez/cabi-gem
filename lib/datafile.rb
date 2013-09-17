@@ -64,7 +64,7 @@ module Cabi
 
     def self.id_array(id)
       id = id.split( DELIMITER )
-      [Cabi.cache_dir] + id
+      [Cabi.data_dir] + id
     end
 
     def self.exists?(id)
@@ -94,7 +94,7 @@ module Cabi
       id.each_with_index do |key, index|
         break if val
 
-        a                 =  [Cabi.cache_dir] + id[0..index] 
+        a                 =  [Cabi.data_dir] + id[0..index] 
         a[ a.length - 1 ] =  a[a.length - 1 ] + YAML_EXT
         f = File.join( *a )
 

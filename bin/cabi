@@ -6,33 +6,33 @@ require File.join( File.expand_path("../..", __FILE__), "lib", "cabi")
 
 class CabiCLI < Thor
 
-  desc "init", "Initialize Cabi cache directory (use --mock to create fake data, use --target to specify your own directory)"
+  desc "init", "Initialize Cabi data directory (use --mock to create fake data, use --target to specify your own directory)"
   method_options :mock => :boolean, :target => :string
   def init
     
-    target = options[:target] || Cabi::CABI_CACHE_DIR
+    target = options[:target] || Cabi::CABI_DATA_DIR
     FileUtils.mkdir( target )
 
     if options[:mock]
-      f = File.expand_path( "../../data/cabi-cache.tar.gz", __FILE__ )
-      `tar -xf #{f} --strip-components=2 -C #{target}`
+      f = File.expand_path( "../../data/cabi-data.tar.gz", __FILE__ )
+      `tar -xf #{f} --strip-components=1 -C #{target}`
     end
 
-    puts " ** Cabi cache created in #{target}"
+    puts " ** Cabi data created in #{target}"
   end
 
-  desc "clean", "Remove Cabi cache directory"
+  desc "clean", "Remove Cabi data directory"
   method_options :force => :boolean  
   def clean
     if options[:force]
       begin
-        FileUtils.rm_rf( Cabi.cache_dir )
-        FileUtils.rm_rf( Cabi::CABI_CACHE_DIR)
-        puts " ** Cleaned cabi cache" 
+        FileUtils.rm_rf( Cabi.data_dir )
+        FileUtils.rm_rf( Cabi::CABI_DATA_DIR)
+        puts " ** Cleaned cabi data" 
       rescue Exception => e
       end
     else
-      puts " ** Not cleaning cabi cache without --force" 
+      puts " ** Not cleaning cabi data folder without --force" 
     end
   end
 

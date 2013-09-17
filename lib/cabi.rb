@@ -10,15 +10,15 @@ module Cabi
   DELIMITER       = ':'
   BULK_SELECTOR   = '*'
   YAML_EXT        = '.yml'
-  CABI_CACHE_ID   = '.cabi-cache'
-  CABI_CACHE_DIR  = './cabi-cache'
+  CABI_DATA_ID   = '.cabi-data'
+  CABI_DATA_DIR   = './cabi-data'
 
   def self.read(id)
-    Cache.read(id)
+    Data.read(id)
   end
 
   def self.write(id, content)
-    Cache.write(id, content)
+    Data.write(id, content)
   end
 
 end

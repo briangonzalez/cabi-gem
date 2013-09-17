@@ -61,26 +61,6 @@ class CabiTest < Test::Unit::TestCase
     assert_equal  old, Cabi.read('pages:about:body.html')
   end
 
-  def test_cache_dir
-
-    assert_equal  File.expand_path(Cabi::CABI_CACHE_DIR), Cabi.cache_dir
-
-    user_cache = './cache'
-    teardown
-    `./bin/cabi init --mock --target=#{user_cache}`
-    Cabi.reset_cache_dir
-
-    assert_equal  File.expand_path(user_cache), Cabi.cache_dir
-
-    `rm -rf #{user_cache}`
-    `./bin/cabi init --mock`
-    Cabi.reset_cache_dir
-
-    assert_equal  File.expand_path(Cabi::CABI_CACHE_DIR),
-                  Cabi.cache_dir
-
-  end
-
   def test_creation
     string = "Hello, Cabi!"
     Cabi.write('some:random:output.html', string)
@@ -93,12 +73,32 @@ class CabiTest < Test::Unit::TestCase
     assert_nil Cabi.read('some:random:not-found:output')
   end
 
-  def test_missing_cache_dir
+  def test_missing_data_dir
     teardown
 
     assert_raise LoadError do
       Cabi.read('some:random:not-found:output')
     end
+
+  end
+
+  def test_data_dir
+
+    assert_equal  File.expand_path(Cabi::CABI_DATA_DIR), Cabi.data_dir
+
+    user_data = './my-data'
+    teardown
+    `./bin/cabi init --mock --target=#{user_data}`
+    Cabi.reset_data_dir
+
+    assert_equal  File.expand_path(user_data), Cabi.data_dir
+
+    `rm -rf #{user_data}`
+    `./bin/cabi init --mock`
+    Cabi.reset_data_dir
+
+    assert_equal  File.expand_path(Cabi::CABI_DATA_DIR),
+                  Cabi.data_dir
 
   end
 
