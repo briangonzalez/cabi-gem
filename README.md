@@ -57,9 +57,9 @@ For instance, if you had a folder called `super-cache` located inside of your pr
 
 Find me online [@brianmgonzalez](http://twitter.com/brianmgonzalez)
 
-## Icon
+### Icon <img src="https://rawgithub.com/briangonzalez/cabi-gem/master/data/cabi.svg" width=20 style="margin-right: 10px">
 
 [Cabi Icon](http://thenounproject.com/noun/file-cabinet/#icon-No22117) designed by Michela Tannoia, from The Noun Project.
 
-## Tests
+### Tests
 Run the test suite by running `rake test` in the parent directory.
