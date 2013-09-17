@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+require "thor"
+require "fileutils"
+
+CACHE_DIR = 'cabi-cache'
+
+class CabiCLI < Thor
+
+  desc "init", "Initialize Cabi cache directory (use --mock to create fake data, use --target to specify your own directory)"
+  method_options :mock => :boolean, :target => :string
+  def init
+    
+    target = options[:target] || CACHE_DIR
+    FileUtils.mkdir( target )
+
+    if options[:mock]
+      f = File.expand_path( "../../data/cabi-cache.tar.gz", __FILE__ )
+      `tar -xf #{f} --strip-components=1 -C #{target}`
+    end
+
+  end
+
+  desc "clean", "Remove Cabi cache directory"
+  method_options :force => :boolean  
+  def clean
+    if options[:force]
+      FileUtils.rm_rf( CACHE_DIR ) if options[:force]
+    else
+      puts "Not cleaning without --force" 
+    end
+  end
+
+end
+
+CabiCLI.start
