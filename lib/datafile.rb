@@ -3,10 +3,10 @@ module Cabi
   class DataFile
 
     def self.contents(id)
-      return self.bulk_selection(id)                    if self.bulk_selection?(id)
-      return File.read( self.file(id) )                 if self.file_exists?(id)
-      return File.read( self.yaml_file(id) )            if self.yaml_exists?(id)
-      return File.read( self.non_extension_file(id) )   if self.non_extension_file(id)
+      return self.bulk_selection(id)                        if self.bulk_selection?(id)
+      return File.read( self.file(id) )                     if self.file_exists?(id)
+      return YAML.load(File.read( self.yaml_file(id) ))     if self.yaml_exists?(id)
+      return File.read( self.non_extension_file(id) )       if self.non_extension_file(id)
       return self.sub_yaml(id)
     end
 

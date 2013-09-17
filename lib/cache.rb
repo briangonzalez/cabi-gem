@@ -14,10 +14,8 @@ module Cabi
         dir = false
 
         Dir.foreach('.') do |item|
-          next if item == '.' or item == '..'
-          if File.directory?(item) and File.exists?( File.join(item, CABI_CACHE_ID) )
-            dir = item
-          end
+          next if item == '..' or !File.directory?(item)
+          dir = item if File.exists?( File.join(item, CABI_CACHE_ID) )
           break if dir
         end
 
@@ -28,7 +26,8 @@ module Cabi
 
   # Helpers for setting/getting cache dir.
   def self.cache_dir
-    @@cache_dir ||= Cache.user_cache_dir || CABI_CACHE_DIR
+    dir             = Cache.user_cache_dir || CABI_CACHE_DIR
+    @@cache_dir     = File.expand_path(dir)
     raise LoadError.new "Could not find cabi cache folder!" unless File.exists? @@cache_dir
     @@cache_dir
   end

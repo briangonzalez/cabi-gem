@@ -20,6 +20,10 @@ class CabiTest < Test::Unit::TestCase
   def test_yml_hash
     assert_equal  'baz', 
                   Cabi.read('pages:about:meta:foo')['bar']
+
+    links = ["Home", "About", "Contact", "Services"]
+    assert_equal  links, 
+                  Cabi.read('nav:links')      
   end
 
   def test_explicit_and_non_explicit_query
@@ -33,14 +37,15 @@ class CabiTest < Test::Unit::TestCase
 
     selection = Cabi.read('pages:about:*')
 
-    assert_equal  2, selection.length  
+    assert_equal  5, selection.length  
     assert_equal  string, selection[0]  
 
     assert_equal  1, Cabi.read('pages:about:*.yml').length
-    assert_equal  1, Cabi.read('pages:about:*.html').length
-    assert_equal  5, Cabi.read('**/**').length
-    assert_equal  3, Cabi.read('**/**.html').length
+    assert_equal  4, Cabi.read('pages:about:*.html').length
+    assert_equal  9, Cabi.read('**/*').length
+    assert_equal  6, Cabi.read('**/*.html').length
     assert_equal  1, Cabi.read('**/body.*').length
+    assert_equal  3, Cabi.read('pages:about:**/person-*').length
   end
 
   def test_write
@@ -58,20 +63,21 @@ class CabiTest < Test::Unit::TestCase
 
   def test_cache_dir
 
-    assert_equal Cabi::CABI_CACHE_DIR, './' + Cabi.cache_dir
+    assert_equal  File.expand_path(Cabi::CABI_CACHE_DIR), Cabi.cache_dir
 
     user_cache = './cache'
     teardown
     `./bin/cabi init --mock --target=#{user_cache}`
     Cabi.reset_cache_dir
 
-    assert_equal user_cache, './' + Cabi.cache_dir
+    assert_equal  File.expand_path(user_cache), Cabi.cache_dir
 
     `rm -rf #{user_cache}`
     `./bin/cabi init --mock`
     Cabi.reset_cache_dir
 
-    assert_equal Cabi::CABI_CACHE_DIR, './' + Cabi.cache_dir
+    assert_equal  File.expand_path(Cabi::CABI_CACHE_DIR),
+                  Cabi.cache_dir
 
   end
 

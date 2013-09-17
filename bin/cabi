@@ -2,7 +2,7 @@
 require "thor"
 require "fileutils"
 
-CACHE_DIR = 'cabi-cache'
+require File.join( File.expand_path("../..", __FILE__), "lib", "cabi")
 
 class CabiCLI < Thor
 
@@ -10,23 +10,29 @@ class CabiCLI < Thor
   method_options :mock => :boolean, :target => :string
   def init
     
-    target = options[:target] || CACHE_DIR
+    target = options[:target] || Cabi::CABI_CACHE_DIR
     FileUtils.mkdir( target )
 
     if options[:mock]
       f = File.expand_path( "../../data/cabi-cache.tar.gz", __FILE__ )
-      `tar -xf #{f} --strip-components=1 -C #{target}`
+      `tar -xf #{f} --strip-components=2 -C #{target}`
     end
 
+    puts " ** Cabi cache created in #{target}"
   end
 
   desc "clean", "Remove Cabi cache directory"
   method_options :force => :boolean  
   def clean
     if options[:force]
-      FileUtils.rm_rf( CACHE_DIR ) if options[:force]
+      begin
+        FileUtils.rm_rf( Cabi.cache_dir )
+        FileUtils.rm_rf( Cabi::CABI_CACHE_DIR)
+        puts " ** Cleaned cabi cache" 
+      rescue Exception => e
+      end
     else
-      puts "Not cleaning without --force" 
+      puts " ** Not cleaning cabi cache without --force" 
     end
   end
 
