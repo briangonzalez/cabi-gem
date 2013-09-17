@@ -68,8 +68,16 @@ class CabiTest < Test::Unit::TestCase
   end
 
   def test_not_found
-    assert_equal  nil,
-                  Cabi.read('some:random:not-found:output')
+    assert_nil Cabi.read('some:random:not-found:output')
+  end
+
+  def test_missing_cache_dir
+    teardown
+
+    assert_raise LoadError do
+      Cabi.read('some:random:not-found:output')
+    end
+
   end
 
 end

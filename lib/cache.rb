@@ -29,6 +29,8 @@ module Cabi
   # Helpers for setting/getting cache dir.
   def self.cache_dir
     @@cache_dir ||= Cache.user_cache_dir || CABI_CACHE_DIR
+    raise LoadError.new "Could not find cabi cache folder!" unless File.exists? @@cache_dir
+    @@cache_dir
   end
 
   def self.reset_cache_dir
