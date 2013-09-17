@@ -56,6 +56,7 @@ Cabi.read('posts:some-article:index.html')    # contents of posts/some-article/i
 Cabi.read('pages:about:*')                    # an array of body.html and meta.yml contents
 Cabi.read('pages:about:person-*')             # an array of all person-* html files
 Cabi.read('**/*')                             # an array of all files in data
+Cabi.read('**/*').length                      # 9
 
 # Selection within YAML files
 Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
