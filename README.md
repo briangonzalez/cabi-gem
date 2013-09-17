@@ -24,19 +24,16 @@ $ irb
 
 Assuming your `cabi-cache` folder has the following structure:
 
-    - my-project
-      |
-      |--cabi-cache
-        |-- info.yml
-        |-- pages
-        |    |-- about 
-        |         |-- body.html
-        |         |-- meta.yml
-        |         
-        |-- posts
-          |-- some-article
-                |-- index.html
-                |-- nav.html
+    |-- info.yml
+    |-- pages
+    |    |-- about 
+    |         |-- body.html
+    |         |-- meta.yml
+    |         
+    |-- posts
+      |-- some-article
+            |-- index.html
+            |-- nav.html
             
 
 You could then query your data like so:
