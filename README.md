@@ -49,7 +49,7 @@ Cabi.read('posts:some-article:index.html')   # returns contents of posts/some-ar
 
 ### Custom Cache Directory
 
-Cabi assumes that your cache directory is either a folder at the top level of your project with a `.cabi-cache` file in it. If one is not found, the cache directory defaults to `./cabi-cache`.
+Cabi assumes that your cache directory is either a folder at the top level of your project with a `.cabi-cache` file in it (to indicate that it's the cache directory). If one is not found, the cache directory defaults to `./cabi-cache`.
 
 For instance, if you had a folder called `super-cache` located inside of your project's root that had a file called `.cabi-cache` inside of it, this folder would be treated as your cache directory.
 
