@@ -10,6 +10,10 @@ module Cabi
         file = DataFile.write(id, content)
       end
 
+      def self.file(id)
+        file = DataFile.write(id, content)
+      end
+
       def self.user_data_dir
         dir = false
 

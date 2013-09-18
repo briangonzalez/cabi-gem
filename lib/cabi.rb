@@ -21,4 +21,8 @@ module Cabi
     Data.write(id, content)
   end
 
+  def self.file(id)
+    DataFile.file_yaml_or_non_extension_file(id)
+  end
+
 end

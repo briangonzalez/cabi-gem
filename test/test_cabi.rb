@@ -102,4 +102,23 @@ class CabiTest < Test::Unit::TestCase
 
   end
 
+  def test_file_selection
+    file = File.expand_path File.join( 'cabi-data', 'pages', 'about', 'body.html' )
+
+    assert_equal  file,
+                  Cabi.file('pages:about:body')
+
+    assert_nil    Cabi.file('some:random:not-found:output')
+  end
+
+  def test_bulk_file_selection
+
+    assert_equal  5,
+                  Cabi.file('pages:about:**/*').length
+
+  end
+
 end
+
+
+

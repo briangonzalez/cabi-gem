@@ -8,6 +8,7 @@ module Cabi
       return YAML.load(File.read( self.yaml_file(id) ))     if self.yaml_exists?(id)
       return File.read( self.non_extension_file(id) )       if self.non_extension_file(id)
       return self.sub_yaml(id)
+      nil
     end
 
     def self.write(id, content)
@@ -25,9 +26,10 @@ module Cabi
     end
 
     def self.file_yaml_or_non_extension_file(id)
-      return self.file(id)                if self.file_exists?(id)
-      return self.yaml_file(id)           if self.yaml_exists?(id)
-      return self.non_extension_file(id)  if self.non_extension_file(id)
+      return self.bulk_selection(id, true)  if self.bulk_selection?(id)
+      return self.file(id)                  if self.file_exists?(id)
+      return self.yaml_file(id)             if self.yaml_exists?(id)
+      return self.non_extension_file(id)    if self.non_extension_file(id)
       nil
     end
 
@@ -51,12 +53,13 @@ module Cabi
       file
     end
 
-    def self.bulk_selection(id)
+    def self.bulk_selection(id, only_file=false)
       contents  = []
 
       Dir.glob( File.join( *self.id_array(id) ) ).each do |f|
         next if f == '.' or f == '..' or File.directory?(f)
-        contents << File.read(f) if File.exists?(f)
+
+        contents << (only_file ? f : File.read(f)) if File.exists?(f)
       end
 
       contents
