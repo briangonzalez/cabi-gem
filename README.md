@@ -60,7 +60,9 @@ Cabi.read('**/*').length                      # 9
 
 # Selection within YAML files
 Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in page/about/meta.yml hash
+Cabi.read('pages:about:meta.yml:foo:bar')     # same as above
 Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
+Cabi.read('info.yml:foo:bar:baz')             # same as above
 ```
 
 ### Custom Data Directory

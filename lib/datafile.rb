@@ -4,8 +4,8 @@ module Cabi
 
     def self.contents(id)
       return self.bulk_selection(id)                        if self.bulk_selection?(id)
-      return File.read( self.file(id) )                     if self.file_exists?(id)
       return YAML.load(File.read( self.yaml_file(id) ))     if self.yaml_exists?(id)
+      return File.read( self.file(id) )                     if self.file_exists?(id)
       return File.read( self.non_extension_file(id) )       if self.non_extension_file(id)
       return self.sub_yaml(id)
       nil
@@ -27,8 +27,8 @@ module Cabi
 
     def self.file_yaml_or_non_extension_file(id)
       return self.bulk_selection(id, true)  if self.bulk_selection?(id)
-      return self.file(id)                  if self.file_exists?(id)
       return self.yaml_file(id)             if self.yaml_exists?(id)
+      return self.file(id)                  if self.file_exists?(id)
       return self.non_extension_file(id)    if self.non_extension_file(id)
       nil
     end
@@ -38,7 +38,12 @@ module Cabi
     end
 
     def self.yaml_file(id)
-      File.join( self.file(id) + YAML_EXT )
+      path = self.has_yaml_ext?(id) ? self.file(id) : self.file(id) + YAML_EXT
+      File.join( path )
+    end
+
+    def self.has_yaml_ext?(id)
+      (id[-4..-1] == YAML_EXT)
     end
 
     def self.non_extension_file(id)
@@ -97,8 +102,9 @@ module Cabi
       id.each_with_index do |key, index|
         break if val
 
-        a                 =  [Cabi.data_dir] + id[0..index] 
-        a[ a.length - 1 ] =  a[a.length - 1 ] + YAML_EXT
+        a                 = [Cabi.data_dir] + id[0..index] 
+        last              = a[a.length - 1] 
+        a[ a.length - 1 ] = last + YAML_EXT if !self.has_yaml_ext?(last)
         f = File.join( *a )
 
         if File.exists? f

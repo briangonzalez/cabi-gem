@@ -24,6 +24,9 @@ class CabiTest < Test::Unit::TestCase
     links = ["Home", "About", "Contact", "Services"]
     assert_equal  links, 
                   Cabi.read('nav:links')      
+
+    assert_equal  links, 
+                  Cabi.read('nav.yml:links')                   
   end
 
   def test_explicit_and_non_explicit_query
