@@ -8,13 +8,15 @@ class CabiTest < Test::Unit::TestCase
   # => Run this test suite by calling "rake test"
   #
 
+  BIN = './bin/cabi'
+
   def setup
     teardown
-    `./bin/cabi init --mock`
+    `#{BIN} init --mock`
   end
 
   def teardown
-    `./bin/cabi clean --force`
+    `#{BIN} clean --force`
   end
 
   def test_yml_hash
@@ -91,13 +93,13 @@ class CabiTest < Test::Unit::TestCase
 
     user_data = './my-data'
     teardown
-    `./bin/cabi init --mock --target=#{user_data}`
+    `#{BIN} init --mock --target=#{user_data}`
     Cabi.reset_data_dir
 
     assert_equal  File.expand_path(user_data), Cabi.data_dir
 
     `rm -rf #{user_data}`
-    `./bin/cabi init --mock`
+    `#{BIN} init --mock`
     Cabi.reset_data_dir
 
     assert_equal  File.expand_path(Cabi::CABI_DATA_DIR),
@@ -118,6 +120,17 @@ class CabiTest < Test::Unit::TestCase
 
     assert_equal  5,
                   Cabi.file('pages:about:**/*').length
+
+  end
+
+  def test_clean_data_dir
+    old_dir = Dir.pwd
+    Dir.chdir Cabi::CABI_DATA_DIR
+
+    `pwd && .#{BIN} clean --force`
+    Dir.chdir old_dir
+
+    assert File.exists? Cabi::CABI_DATA_DIR
 
   end
 

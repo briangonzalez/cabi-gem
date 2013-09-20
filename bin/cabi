@@ -6,6 +6,9 @@ require File.join( File.expand_path("../..", __FILE__), "lib", "cabi")
 
 class CabiCLI < Thor
 
+  # -----------------------------------------------------------------------------------------------------------
+  # Init Task
+  # -----------------------------------------------------------------------------------------------------------
   desc "init", "Initialize Cabi data directory (use --mock to create fake data, use --target to specify your own directory)"
   method_options :mock => :boolean, :target => :string
   def init
@@ -18,22 +21,34 @@ class CabiCLI < Thor
       `tar -xf #{f} --strip-components=1 -C #{target}`
     end
 
-    puts " ** Cabi data created in #{target}"
+    puts "** Cabi data created in #{target}"
   end
 
+  # -----------------------------------------------------------------------------------------------------------
+  # Clean Task
+  # -----------------------------------------------------------------------------------------------------------
   desc "clean", "Remove Cabi data directory"
   method_options :force => :boolean  
   def clean
-    if options[:force]
-      begin
-        FileUtils.rm_rf( Cabi.data_dir )
-        FileUtils.rm_rf( Cabi::CABI_DATA_DIR)
-        puts " ** Cleaned cabi data" 
-      rescue Exception => e
-      end
+    puts "\n** Trying to clean Cabi data folder." 
+
+    current_dir = File.expand_path(Dir.pwd) == Cabi.data_dir({ quiet: true })
+
+    if current_dir
+      puts "** Cabi data folder is the same as the current folder -- not cleaning!" 
     else
-      puts " ** Not cleaning cabi data folder without --force" 
+      if options[:force]
+        begin
+          FileUtils.rm_rf( Cabi.data_dir )
+          puts " ** Cleaned cabi data" 
+        rescue Exception => e
+        end
+      else
+        puts "** Not cleaning cabi data folder without --force" 
+      end
     end
+
+
   end
 
 end

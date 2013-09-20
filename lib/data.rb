@@ -29,10 +29,13 @@ module Cabi
   end
 
   # Helpers for setting/getting data dir.
-  def self.data_dir
+  def self.data_dir(opts={})
     dir             = Data.user_data_dir || CABI_DATA_DIR
     @@data_dir      = File.expand_path(dir)
-    raise LoadError.new "Could not find cabi data folder!" unless File.exists? @@data_dir
+
+    return nil                                              if !File.exists?(@@data_dir) and opts[:quiet]
+    raise LoadError.new "Could not find cabi data folder!"  if !File.exists? @@data_dir
+
     @@data_dir
   end
 
