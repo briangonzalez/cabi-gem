@@ -63,6 +63,10 @@ Cabi.read('pages:about:meta:foo:bar')         # contents of ['foo']['bar'] in pa
 Cabi.read('pages:about:meta.yml:foo:bar')     # same as above
 Cabi.read('info:foo:bar:baz')                 # contents of ['foo']['bar']['baz'] in info.yml hash
 Cabi.read('info.yml:foo:bar:baz')             # same as above
+
+# Return a file path for a Cabi ID.
+Cabi.file('pages:about:meta:foo:bar')         # path fo file at /pages/about/meta/foo/bar
+Cabi.path_to_id('/pages/about/meta/foo/bar')  # pages:about:meta:foo:bar
 ```
 
 ### Custom Data Directory

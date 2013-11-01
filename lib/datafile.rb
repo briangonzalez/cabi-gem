@@ -1,10 +1,12 @@
-module Cabi
 
+require 'FileUtils'
+
+module Cabi
   class DataFile
 
-    def self.contents(id)
+    def self.contents(id, opts={})
       return self.bulk_selection(id)                        if self.bulk_selection?(id)
-      return YAML.load(File.read( self.yaml_file(id) ))     if self.yaml_exists?(id)
+      return YAML.load(File.read( self.yaml_file(id) ))     if self.yaml_exists?(id) and !opts[:no_yaml]
       return File.read( self.file(id) )                     if self.file_exists?(id)
       return File.read( self.non_extension_file(id) )       if self.non_extension_file(id)
       return self.sub_yaml(id)
@@ -25,11 +27,21 @@ module Cabi
       File.open( file, 'w') {|f| f.write(content) } 
     end
 
-    def self.file_yaml_or_non_extension_file(id)
-      return self.bulk_selection(id, true)  if self.bulk_selection?(id)
-      return self.yaml_file(id)             if self.yaml_exists?(id)
-      return self.file(id)                  if self.file_exists?(id)
-      return self.non_extension_file(id)    if self.non_extension_file(id)
+    def self.create(id, content="")
+      file = self.file(id) 
+      raise "File exists." if self.file_exists?(id)
+      dir  = File.dirname(file)
+
+      FileUtils.mkdir_p(dir) unless File.exists?(dir)
+      FileUtils.touch(file)
+      Cabi.write(id, content)
+    end
+
+    def self.file_yaml_or_non_extension_file(id, opts={})
+      return self.bulk_selection(id, only_file: true)     if self.bulk_selection?(id)
+      return self.yaml_file(id)                           if self.yaml_exists?(id)
+      return self.file(id)                                if self.file_exists?(id)
+      return self.non_extension_file(id)                  if self.non_extension_file(id)
       nil
     end
 
@@ -58,13 +70,14 @@ module Cabi
       file
     end
 
-    def self.bulk_selection(id, only_file=false)
+    def self.bulk_selection(id, opts={})
       contents  = []
+
+      opts[:only_file]     ||= false
 
       Dir.glob( File.join( *self.id_array(id) ) ).each do |f|
         next if f == '.' or f == '..' or File.directory?(f)
-
-        contents << (only_file ? f : File.read(f)) if File.exists?(f)
+        contents << (opts[:only_file] ? f : File.read(f)) if File.exists?(f)
       end
 
       contents

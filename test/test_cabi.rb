@@ -8,9 +8,11 @@ class CabiTest < Test::Unit::TestCase
   # => Run this test suite by calling "rake test"
   #
 
-  BIN = './bin/cabi'
+  BIN         = '../bin/cabi'
+  DATA_PATH   = File.expand_path('data')
 
   def setup
+    Dir.chdir( DATA_PATH )
     teardown
     `#{BIN} init --mock`
   end

@@ -2,16 +2,16 @@ module Cabi
 
   class Data
 
-      def self.read(id)
-        DataFile.contents(id) || nil
+      def self.read(id, opts={})
+        DataFile.contents(id, opts) || nil
       end
 
       def self.write(id, content)
         file = DataFile.write(id, content)
       end
 
-      def self.file(id)
-        file = DataFile.write(id, content)
+      def self.create(id, content)
+        file = DataFile.create(id, content)
       end
 
       def self.user_data_dir
@@ -28,7 +28,7 @@ module Cabi
 
   end
 
-  # Helpers for setting/getting data dir.
+  # Helpers for setting/getting data directory.
   def self.data_dir(opts={})
     dir             = Data.user_data_dir || CABI_DATA_DIR
     @@data_dir      = File.expand_path(dir)
