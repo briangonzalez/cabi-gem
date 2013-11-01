@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name                  = 'cabi'
-  s.version               = '0.1.8'
+  s.version               = '0.1.9'
   s.summary               = "A simple, flat-file datastore for Ruby."
           
   s.description           = "Cabi is a flat-file datastore where data is stored by directory stucture and accessed by colon-delimited strings."

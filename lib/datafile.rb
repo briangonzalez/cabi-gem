@@ -1,5 +1,5 @@
 
-require 'FileUtils'
+require 'fileutils'
 
 module Cabi
   class DataFile
